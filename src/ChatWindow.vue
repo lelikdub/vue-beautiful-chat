@@ -19,6 +19,7 @@
       :colors="colors"
       :alwaysScrollToBottom="alwaysScrollToBottom"
       :messageStyling="messageStyling"
+      @scrollToTop="$emit('scrollToTop')"
     />
     <UserInput
       v-if="!showUserList"
@@ -27,6 +28,7 @@
       :suggestions="getSuggestions()"
       :showFile="showFile"
       :placeholder="placeholder"
+      @onType="$emit('onType')"
       :colors="colors" />
   </div>
 </template>

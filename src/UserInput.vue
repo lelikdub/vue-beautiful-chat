@@ -94,6 +94,7 @@ export default {
         this._submitText(event)
         event.preventDefault()
       }
+      this.$emit('onType')
     },
     _submitSuggestion(suggestion) {
       this.onSubmit({author: 'me', type: 'text', data: { text: suggestion }})
@@ -137,7 +138,37 @@ export default {
       })
     },
     _handleFileSubmit (file) {
-      this.file = file
+      var fileext=file.name.split('.').pop()
+      var filename=file.name.split('.').slice(0, -1).join('.')
+      var ftype=['.jpg','.jpeg','.png','.img','jpg','jpeg','png','img']
+      if(ftype.find((x)=>{return x==fileext.toLowerCase()}))
+      {
+        //img to canvas and to file
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = (event)=>{
+          var img = new Image();
+          img.onload = ()=>{
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.fillStyle = '#fff';  /// set white fill style
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img,0,0);
+            var fileurl = canvas.toDataURL("image/jpeg",0.7);
+            var blobBin = atob(fileurl.split(',')[1]);
+            var array = [];
+            for(var i = 0; i < blobBin.length; i++) {
+              array.push(blobBin.charCodeAt(i));
+            }
+            this.file = new File([new Uint8Array(array)],filename+'.jpg',{type: "image/jpeg"});
+          }
+          img.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+      } else if(fileext=='pdf'){
+        this.file = file
+      }
     }
   }
 }

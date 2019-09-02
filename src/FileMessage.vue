@@ -1,12 +1,11 @@
 <template>
   <div class='sc-message--file' :style="messageColors">
-    <div class='sc-message--file-icon'>
-      <a :href="data.file.url || '#'" target='_blank'>
-        <img src="./assets/file.svg" alt='generic file icon' height="60" />
-      </a>
+    <div class='sc-message--file-icon' @click="showfile(data)">
+      <img :src="imgimg" class="sc-image"  v-if="data.file.img">
+      <img :src="fileimg" class="sc-image" v-else>
     </div>
-    <div class='sc-message--file-name' :style="messageColors">
-      <a :href="data.file.url ? data.file.url : '#'" target='_blank'>{{data.file.name || ''}}</a>
+    <div class='sc-message--file-name' :style="messageColors" @click="showfile(data)">
+      {{data.file.name || ''}}
     </div>
     <div class="sc-message--file-text" :style="messageColors">{{data.text}}<p v-if="data.meta" class='sc-message--meta' :style="messageColors">{{data.meta}}</p></div>
   </div>
@@ -14,6 +13,12 @@
 
 <script>
 export default {
+  data(){
+    return {
+      imgimg: require('./assets/fileimageico.png'),
+      fileimg: require('./assets/fileico.png'),
+    }
+  },
   props: {
     data: {
       type: Object,
@@ -22,6 +27,11 @@ export default {
     messageColors: {
       type: Object,
       required: true
+    }
+  },
+  methods:{
+    showfile(val){
+      this.$modal.show('chatfile', val.file );
     }
   }
 }
@@ -47,10 +57,12 @@ export default {
   margin-right: auto;
   margin-top: 15px;
   margin-bottom: 0px;
+  cursor: pointer;
 }
 
-.sc-message--file-icon:hover {
-  opacity: 0.7;
+.sc-image {
+  max-width: 78px;
+  min-width: 78px;
 }
 
 .sc-message--file-text {
@@ -64,10 +76,12 @@ export default {
 }
 
 .sc-message--file-name {
+  cursor: pointer;
   color: white;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 0;
+  padding-bottom: 0;
   font-size: x-small;
   text-align: center;
 }

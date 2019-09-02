@@ -26,7 +26,7 @@ Go to [FAQ](#faq) ⬇️
 ## Table of Contents
 - [Installation](#installation)
 - [Example](#example)
-- [Components](#api)
+- [Components](#components)
 
 ## Installation
 
@@ -57,7 +57,8 @@ Vue.use(Chat)
       :showTypingIndicator="showTypingIndicator"
       :colors="colors"
       :alwaysScrollToBottom="alwaysScrollToBottom"
-      :messageStyling="messageStyling" />
+      :messageStyling="messageStyling"
+      @onType="handleOnType" />
   </div>
 </template>
 ```
@@ -111,7 +112,7 @@ export default {
         }
       }, // specifies the color scheme for the component
       alwaysScrollToBottom: false, // when set to true always scrolls the chat to the bottom when new events are in (new message, user starts typing...)
-      messageStyling: true // enables *bold* /emph/ _underline_ and such (more info at github.com/mattmezza/msgdown)
+      messageStyling: true // enables *bold* /emph/ _underline_ and such (more info at github.com/mattezza/msgdown)
     }
   },
   methods: {
@@ -133,8 +134,14 @@ export default {
     closeChat () {
       // called when the user clicks on the botton to close the chat
       this.isChatOpen = false
+    },
+    handleScrollToTop () {
+      // called when the user scrolls message list to top
+      // leverage pagination for loading another page of messages
+  	},
+    handleOnType () {
+      console.log('Emit typing event')
     }
-  }
 }
 ```
 
@@ -162,6 +169,11 @@ Launcher props:
 | colors | Object | An object containing the specs of the colors used to paint the component. [See here](#faq)
 | messageStyling | Boolean | A bool indicating whether or not to enable `msgdown` support for message formatting in chat. [See here](#faq)
 
+Launcher events:
+
+|event | params   | description |
+|-----|--------|---------------|
+| onType | undefined | Fires when user types on the message input |
 
 ### Message Objects
 
@@ -288,3 +300,6 @@ Good news, message formatting is already added for you. You can enable it by set
 
 </p>
 </details>
+
+ # Join the team 
+ Do you want to collaborate? Join the project at https://crowdforge.io/projects/581

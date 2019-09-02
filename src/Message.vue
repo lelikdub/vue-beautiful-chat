@@ -1,5 +1,5 @@
 <template>
-  <div class="sc-message">
+  <div class="sc-message" :id="message.MsgID">
     <div class="sc-message--content" :class="{
         sent: message.author === 'me',
         received: message.author !== 'me' && message.type !== 'system',
@@ -7,7 +7,7 @@
       }">
       <div v-if="message.type !== 'system'" :title="authorName" class="sc-message--avatar" :style="{
         backgroundImage: `url(${chatImageUrl})`
-      }" v-tooltip="message.author"></div>
+      }" v-tooltip="authorName"></div>
       <TextMessage v-if="message.type === 'text'" :data="message.data" :messageColors="determineMessageColors()" :messageStyling="messageStyling" />
       <EmojiMessage v-else-if="message.type === 'emoji'" :data="message.data" />
       <FileMessage v-else-if="message.type === 'file'" :data="message.data" :messageColors="determineMessageColors()" />
@@ -78,7 +78,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style>
 .sc-message {
   width: 300px;
   margin: auto;

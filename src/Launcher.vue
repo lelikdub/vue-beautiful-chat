@@ -22,6 +22,8 @@
       :colors="colors"
       :alwaysScrollToBottom="alwaysScrollToBottom"
       :messageStyling="messageStyling"
+      @scrollToTop="$emit('scrollToTop')"
+      @onType="$emit('onType')"
     />
   </div>
 </template>
@@ -140,7 +142,9 @@ export default {
         return this.title
       }
 
-      if (this.participants.length > 1) {
+      if (this.participants.length === 0) {
+        return 'You'
+      } else if (this.participants.length > 1) {
         return 'You, ' + this.participants[0].name + ' & others'
       } else {
         return 'You & ' + this.participants[0].name
