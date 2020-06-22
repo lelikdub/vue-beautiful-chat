@@ -31,7 +31,7 @@ export default {
   },
   methods:{
     showfile(val){
-      this.$modal.show('chatfile', val.file );
+      this.$store.dispatch('chatfile', { show: true, file: val.file })
     }
   }
 }
